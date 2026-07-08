@@ -1,0 +1,9 @@
+{
+  "Version": 1,
+  "Name": "Именование осей",
+  "ToolTip": "Автоматическое именование осей по X (цифры) и Y (буквы)",
+  "Icon": "icon.png",
+  "VisibleInState": "Any",
+  "Author": "AI",
+  "Script": "script.cs"
+}
