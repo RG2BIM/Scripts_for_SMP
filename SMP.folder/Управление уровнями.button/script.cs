@@ -233,16 +233,33 @@ public class LevelManagerForm : Form
             if (_grid.SelectedRows.Count > 0 && _app.Project != null)
             {
                 var ids = new List<int>();
+                LevelItem lowestLevel = null;
+
                 foreach (DataGridViewRow row in _grid.SelectedRows)
                 {
                     var item = row.DataBoundItem as LevelItem;
                     if (item != null && item.Id != -1)
                     {
                         ids.Add(item.Id);
+                        
+                        if (lowestLevel == null || item.Elevation < lowestLevel.Elevation)
+                        {
+                            lowestLevel = item;
+                        }
                     }
                 }
                 if (ids.Count > 0)
+                {
+                    var view = _app.ActiveView as Renga.IModelView;
+                    if (view != null && lowestLevel != null)
+                    {
+#if RENGA_9_2_OR_GREATER
+                        view.ActiveLevelId = lowestLevel.Id;
+#endif
+                    }
+                    
                     _app.Selection.SetSelectedObjects(ids.ToArray());
+                }
             }
         }
         catch (Exception ex)
