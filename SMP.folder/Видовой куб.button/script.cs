@@ -148,7 +148,7 @@ namespace ScriptManagerPlugin
             contextMenu.Items.Add(viewsMenu);
             
             contextMenu.Items.Add(new ToolStripSeparator());
-            contextMenu.Items.Add("Закрыть штурвал", null, (s, e) => this.Close());
+            contextMenu.Items.Add("Закрыть видовой куб", null, (s, e) => this.Close());
 
             this.ContextMenuStrip = contextMenu;
 
