@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
@@ -13,6 +13,14 @@ public class DrawingItem
 }
 
 // Точка входа скрипта
+public static class WinApi
+{
+    [System.Runtime.InteropServices.DllImport("user32.dll")]
+    public static extern IntPtr GetForegroundWindow();
+
+    [System.Runtime.InteropServices.DllImport("user32.dll", CharSet = System.Runtime.InteropServices.CharSet.Auto, SetLastError = true)]
+    public static extern int GetWindowText(IntPtr hWnd, System.Text.StringBuilder lpString, int nMaxCount);
+}
 try
 {
     var project = RengaApp.Project;
@@ -76,7 +84,14 @@ try
         try { dynamic dv = activeView; repId = dv.RepresentedEntityId; } catch { }
         try { dynamic dv = activeView; viewName = dv.Name; } catch { }
 
-        string windowTitle = System.Diagnostics.Process.GetCurrentProcess().MainWindowTitle;
+        string windowTitle = "";
+        try 
+        {
+            var sb = new System.Text.StringBuilder(256);
+            WinApi.GetWindowText(WinApi.GetForegroundWindow(), sb, 256);
+            windowTitle = sb.ToString();
+        } 
+        catch { }
 
         for (int i = 0; i < clbDrawings.Items.Count; i++)
         {
