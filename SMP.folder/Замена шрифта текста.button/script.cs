@@ -218,7 +218,7 @@ try
                     for (int p = 0; p < doc.ParagraphCount; p++)
                     {
                         var para = doc.GetParagraph(p);
-                        for (int t = 0; t < para.TokenCount; t++)
+                        for (int t = para.TokenCount - 1; t >= 0; t--)
                         {
                             var token = para.GetToken(t);
                             
@@ -233,8 +233,8 @@ try
                                 token.FontStyle = style;
                             }
 
-                            para.RemoveToken(t);
                             para.InsertToken(t, token);
+                            para.RemoveToken(t + 1);
                             modified = true;
                         }
                     }
@@ -244,11 +244,13 @@ try
             }
 
             op.Apply();
-            MessageBox.Show(form, $"Успешно!\nИзменено текстов на выбранных чертежах: {count}");
+            form.Hide();
+            MessageBox.Show($"Успешно!\nИзменено текстов на выбранных чертежах: {count}");
         }
         catch (Exception ex)
         {
-            MessageBox.Show(form, "Ошибка: " + ex.Message);
+            form.Hide();
+            MessageBox.Show("Ошибка: " + ex.Message);
         }
         finally 
         {
