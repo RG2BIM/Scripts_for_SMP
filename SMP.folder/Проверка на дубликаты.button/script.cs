@@ -134,32 +134,9 @@ foreach (var kvp in modelObjects) {
         var bbox = GetBBox(obj3D);
         hash = $"BBOX_{objType}_{Math.Round(bbox.MinX, 3)}_{Math.Round(bbox.MinY, 3)}_{Math.Round(bbox.MinZ, 3)}_{Math.Round(bbox.MaxX, 3)}_{Math.Round(bbox.MaxY, 3)}_{Math.Round(bbox.MaxZ, 3)}";
     } else {
-        // Fallback для объектов без 3D геометрии (например, Проемы)
-        hash = $"PARAM_{objType}";
-        
-        try {
-            var paramsObj = mo.GetParameters();
-            var pIds = paramsObj.GetIds();
-            var pList = new List<string>();
-            
-            for (int j = 0; j < pIds.Count; j++) {
-                var pId = pIds.Get(j);
-                var p = paramsObj.Get(pId);
-                if (p.HasValue) {
-                    if (p.ValueType == Renga.ParameterValueType.ParameterValueType_Double)
-                        pList.Add($"p{pId}:{Math.Round(p.GetDoubleValue(), 3)}");
-                    else if (p.ValueType == Renga.ParameterValueType.ParameterValueType_Int)
-                        pList.Add($"p{pId}:{p.GetIntValue()}");
-                    else if (p.ValueType == Renga.ParameterValueType.ParameterValueType_Bool)
-                        pList.Add($"p{pId}:{p.GetBoolValue()}");
-                }
-            }
-            
-            // Обязательная сортировка, так как GetIds может возвращать параметры в произвольном порядке
-            pList.Sort();
-            hash += "_" + string.Join("_", pList);
-            
-        } catch {}
+        // Пропускаем объекты без 3D геометрии (2D-размеры, тексты, выноски, пустые объекты), 
+        // так как без координат их нельзя проверить на пространственные дубликаты.
+        continue;
     }
     
     if (!dict.ContainsKey(hash)) {
