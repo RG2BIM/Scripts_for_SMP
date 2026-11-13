@@ -78,41 +78,45 @@ namespace ScriptManagerPlugin
         private void InitializeComponent()
         {
             this.Text = "Проверка отсутствующих шрифтов (по журналу Renga AecApp.log)";
-            this.ClientSize = new Size(865, 510);
+            this.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            this.AutoScaleDimensions = new SizeF(96F, 96F);
+            this.AutoScaleMode = AutoScaleMode.Dpi;
+            this.ClientSize = new Size(865, 530);
             this.BackColor = Color.White;
             this.FormBorderStyle = FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.StartPosition = FormStartPosition.CenterScreen;
-            this.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            this.AutoScaleMode = AutoScaleMode.Dpi;
 
             // 1. Верхний информационный блок
             var pnlTop = new Panel
             {
                 Location = new Point(15, 12),
-                Size = new Size(835, 54),
+                Size = new Size(835, 92),
                 BackColor = Color.FromArgb(248, 249, 250),
-                BorderStyle = BorderStyle.FixedSingle
+                BorderStyle = BorderStyle.FixedSingle,
+                Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right
             };
 
             _lblSummary = new Label
             {
-                Location = new Point(12, 8),
-                Size = new Size(810, 20),
+                Location = new Point(14, 12),
+                AutoSize = true,
                 Font = new Font("Segoe UI", 10F, FontStyle.Bold),
                 ForeColor = Color.FromArgb(32, 33, 36),
-                Text = "Чтение журнала Renga..."
+                Text = "Чтение журнала Renga...",
+                Anchor = AnchorStyles.Top | AnchorStyles.Left
             };
             pnlTop.Controls.Add(_lblSummary);
 
             _lblSubtitle = new Label
             {
-                Location = new Point(12, 29),
-                Size = new Size(810, 18),
+                Location = new Point(14, 42),
+                AutoSize = true,
                 Font = new Font("Segoe UI", 9F, FontStyle.Regular),
                 ForeColor = Color.FromArgb(95, 99, 104),
-                Text = ""
+                Text = "",
+                Anchor = AnchorStyles.Top | AnchorStyles.Left
             };
             pnlTop.Controls.Add(_lblSubtitle);
 
@@ -122,15 +126,16 @@ namespace ScriptManagerPlugin
             var gbDetails = new GroupBox
             {
                 Text = "Места в проекте, где используется отсутствующий шрифт (двойной клик для перехода на вид)",
-                Location = new Point(15, 74),
-                Size = new Size(835, 375),
-                Font = new Font("Segoe UI", 9F)
+                Location = new Point(15, 112),
+                Size = new Size(835, 354),
+                Font = new Font("Segoe UI", 9F),
+                Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right
             };
 
             _gridDetails = new DataGridView
             {
                 Location = new Point(15, 24),
-                Size = new Size(805, 336),
+                Size = new Size(805, 315),
                 BackgroundColor = Color.White,
                 BorderStyle = BorderStyle.FixedSingle,
                 CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal,
@@ -141,7 +146,8 @@ namespace ScriptManagerPlugin
                 AllowUserToDeleteRows = false,
                 AllowUserToResizeRows = false,
                 ReadOnly = true,
-                AutoGenerateColumns = false
+                AutoGenerateColumns = false,
+                Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right
             };
 
             // Настройка заголовков: запрещаем синюю подсветку заголовка при фокусе
@@ -163,25 +169,25 @@ namespace ScriptManagerPlugin
             _gridDetails.Columns.Add(new DataGridViewTextBoxColumn
             {
                 HeaderText = "Отсутствующий шрифт",
-                Width = 200,
+                Width = 190,
                 DataPropertyName = "FontName"
             });
             _gridDetails.Columns.Add(new DataGridViewTextBoxColumn
             {
                 HeaderText = "Раздел",
-                Width = 140,
+                Width = 130,
                 DataPropertyName = "Category"
             });
             _gridDetails.Columns.Add(new DataGridViewTextBoxColumn
             {
                 HeaderText = "Имя вида / Спецификации / Чертежа",
-                Width = 310,
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill,
                 DataPropertyName = "TargetName"
             });
             _gridDetails.Columns.Add(new DataGridViewTextBoxColumn
             {
                 HeaderText = "Статус перехода",
-                Width = 155,
+                Width = 160,
                 DataPropertyName = "StatusText"
             });
 
@@ -190,17 +196,18 @@ namespace ScriptManagerPlugin
             gbDetails.Controls.Add(_gridDetails);
             this.Controls.Add(gbDetails);
 
-            // 3. Кнопки действий
+            // 3. Кнопки действий (в правом нижнем углу)
             _btnOpenView = new Button
             {
                 Text = "Перейти",
-                Location = new Point(605, 460),
-                Size = new Size(125, 34),
+                Location = new Point(605, 482),
+                Size = new Size(125, 32),
                 FlatStyle = FlatStyle.Flat,
                 BackColor = Color.FromArgb(26, 115, 232),
                 ForeColor = Color.White,
                 Font = new Font("Segoe UI", 9F, FontStyle.Bold),
-                Cursor = Cursors.Hand
+                Cursor = Cursors.Hand,
+                Anchor = AnchorStyles.Bottom | AnchorStyles.Right
             };
             _btnOpenView.FlatAppearance.BorderSize = 0;
             _btnOpenView.Click += BtnOpenView_Click;
@@ -209,13 +216,14 @@ namespace ScriptManagerPlugin
             _btnClose = new Button
             {
                 Text = "Закрыть",
-                Location = new Point(740, 460),
-                Size = new Size(110, 34),
+                Location = new Point(740, 482),
+                Size = new Size(110, 32),
                 FlatStyle = FlatStyle.Flat,
                 BackColor = Color.White,
                 ForeColor = Color.FromArgb(32, 33, 36),
                 Font = new Font("Segoe UI", 9F),
-                Cursor = Cursors.Hand
+                Cursor = Cursors.Hand,
+                Anchor = AnchorStyles.Bottom | AnchorStyles.Right
             };
             _btnClose.FlatAppearance.BorderColor = Color.FromArgb(200, 208, 219);
             _btnClose.Click += (s, e) => this.Close();
@@ -227,15 +235,11 @@ namespace ScriptManagerPlugin
             _allLocations.Clear();
             _gridDetails.Rows.Clear();
 
-            string logPath = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                @"Renga Software\Renga Professional\AecApp.log");
+            string logPath = FindAecAppLog();
 
-            if (!File.Exists(logPath))
+            if (string.IsNullOrEmpty(logPath) || !File.Exists(logPath))
             {
-                _lblSummary.ForeColor = Color.FromArgb(190, 90, 0);
-                _lblSummary.Text = "Файл журнала Renga не найден.";
-                _lblSubtitle.Text = logPath;
+                UpdateHeader("Файл журнала Renga не найден.", Color.FromArgb(190, 90, 0), "Проверьте запуск Renga и наличие журнала AecApp.log");
                 return;
             }
 
@@ -252,18 +256,11 @@ namespace ScriptManagerPlugin
                     var fontNames = fontGroups.Select(g => g.Key).ToList();
                     int totalPlaces = _allLocations.Count;
 
-                    _lblSummary.ForeColor = Color.FromArgb(217, 48, 37);
-                    if (fontGroups.Count == 1)
-                    {
-                        _lblSummary.Text = $"Отсутствует шрифт: {fontNames[0]}  —  всего найдено мест: {totalPlaces}";
-                    }
-                    else
-                    {
-                        var summaryParts = fontGroups.Select(g => $"{g.Key} ({g.Count()} мест)");
-                        _lblSummary.Text = $"Отсутствуют шрифты: {string.Join(", ", summaryParts)}  —  всего мест: {totalPlaces}";
-                    }
+                    string summary = fontGroups.Count == 1
+                        ? $"Отсутствует шрифт: {fontNames[0]}  —  всего найдено мест: {totalPlaces}"
+                        : $"Отсутствуют шрифты: {string.Join(", ", fontGroups.Select(g => $"{g.Key} ({g.Count()} мест)"))}  —  всего мест: {totalPlaces}";
 
-                    _lblSubtitle.Text = "Выберите строку и нажмите кнопку «Перейти» или дважды кликните по строке.";
+                    UpdateHeader(summary, Color.FromArgb(217, 48, 37), "Выберите строку и нажмите кнопку «Перейти» или дважды кликните по строке.");
 
                     foreach (var loc in _allLocations)
                     {
@@ -278,17 +275,54 @@ namespace ScriptManagerPlugin
                 }
                 else
                 {
-                    _lblSummary.ForeColor = Color.FromArgb(30, 142, 62);
-                    _lblSummary.Text = "В журнале Renga ошибок отсутствия шрифтов не зафиксировано.";
-                    _lblSubtitle.Text = "Все шрифты, используемые в проекте, установлены в системе.";
+                    UpdateHeader("В журнале Renga ошибок отсутствия шрифтов не зафиксировано.", Color.FromArgb(30, 142, 62), "Все шрифты, используемые в проекте, установлены в системе.");
                 }
             }
             catch (Exception ex)
             {
-                _lblSummary.ForeColor = Color.FromArgb(217, 48, 37);
-                _lblSummary.Text = "Ошибка чтения журнала Renga: " + ex.Message;
-                _lblSubtitle.Text = "";
+                UpdateHeader("Ошибка чтения журнала Renga: " + ex.Message, Color.FromArgb(217, 48, 37), "");
             }
+        }
+
+        private void UpdateHeader(string summary, Color color, string subtitle)
+        {
+            _lblSummary.ForeColor = color;
+            _lblSummary.Text = summary;
+            _lblSubtitle.Text = subtitle;
+            _lblSubtitle.Top = _lblSummary.Bottom + 6;
+        }
+
+        private string FindAecAppLog()
+        {
+            string localAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            string rengaFolder = Path.Combine(localAppData, "Renga Software");
+
+            try
+            {
+                string baseDir = AppDomain.CurrentDomain.BaseDirectory ?? "";
+                if (baseDir.IndexOf("Standard", StringComparison.OrdinalIgnoreCase) >= 0)
+                {
+                    string p = Path.Combine(rengaFolder, @"Renga Standard\AecApp.log");
+                    if (File.Exists(p)) return p;
+                }
+                else if (baseDir.IndexOf("Professional", StringComparison.OrdinalIgnoreCase) >= 0)
+                {
+                    string p = Path.Combine(rengaFolder, @"Renga Professional\AecApp.log");
+                    if (File.Exists(p)) return p;
+                }
+            }
+            catch { }
+
+            var candidates = new List<string>
+            {
+                Path.Combine(rengaFolder, @"Renga Standard\AecApp.log"),
+                Path.Combine(rengaFolder, @"Renga Professional\AecApp.log")
+            };
+
+            return candidates
+                .Where(File.Exists)
+                .OrderByDescending(f => File.GetLastWriteTime(f))
+                .FirstOrDefault();
         }
 
         private List<MissingFontLocation> ParseMissingFontsFromLog(string logPath)
